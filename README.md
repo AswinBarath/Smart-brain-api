@@ -1,2 +1,2 @@
 # Smart-brain-api
-The Face Recogntion API for Smart-brain react app
+The Face Recognition API for Smart-brain react app
