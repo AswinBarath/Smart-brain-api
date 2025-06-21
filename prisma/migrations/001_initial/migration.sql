@@ -22,7 +22,4 @@ CREATE TABLE "login" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "login_email_key" ON "login"("email");
-
--- AddForeignKey
-ALTER TABLE "login" ADD CONSTRAINT "login_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE; 
+CREATE UNIQUE INDEX "login_email_key" ON "login"("email"); 

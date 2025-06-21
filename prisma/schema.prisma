@@ -16,7 +16,6 @@ model User {
   email  String   @unique
   joined DateTime @default(now())
   entries Int     @default(0)
-  login  Login?
 
   @@map("users")
 }
@@ -25,7 +24,6 @@ model Login {
   id    Int    @id @default(autoincrement())
   hash  String
   email String @unique
-  user  User   @relation(fields: [email], references: [email])
 
   @@map("login")
 } 
