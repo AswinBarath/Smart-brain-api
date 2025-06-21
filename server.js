@@ -12,7 +12,14 @@ const image = require('./controllers/image');
 const app = express();
 
 app.use(bodyParser.json())
-app.use(cors())
+
+// Configure CORS to allow requests from your frontend domain
+app.use(cors({
+  origin: ['https://smart-brain-app-six.vercel.app', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.get('/', (req, res) => { res.send('success') })
 
