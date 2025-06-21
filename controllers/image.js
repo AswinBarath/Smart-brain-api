@@ -12,15 +12,27 @@ const handleApiCall = (req, res) => {
        .catch(err => res.status(400).json('unable to work with API'))
 }
 
-const handleImage = (db) => (req, res) => {
+const handleImage = (prisma) => async (req, res) => {
     const { id } = req.body;
-    db('users').where('id', '=', id)
-    .increment('entries', 1)
-    .returning('entries')
-    .then(entries => {
-        res.json(entries[0]);
-    })
-    .catch(err => res.status(400).json('unable to get entries'))
+    
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: parseInt(id) },
+            data: {
+                entries: {
+                    increment: 1
+                }
+            },
+            select: {
+                entries: true
+            }
+        });
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error('Image update error:', err);
+        res.status(400).json('unable to get entries');
+    }
 }
 
 module.exports = {
