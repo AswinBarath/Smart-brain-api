@@ -23,6 +23,21 @@ app.use(cors({
 
 app.get('/', (req, res) => { res.send('success') })
 
+// Add database test endpoint
+app.get('/test-db', async (req, res) => {
+    try {
+        // Test database connection
+        await prisma.$queryRaw`SELECT 1`;
+        res.json({ status: 'Database connection successful' });
+    } catch (error) {
+        console.error('Database connection test failed:', error);
+        res.status(500).json({ 
+            status: 'Database connection failed', 
+            error: error.message 
+        });
+    }
+});
+
 app.post('/signin', (req, res) => { signin.handleSignin(req, res, bcrypt, prisma) })
 
 app.post("/register", (req, res) => {register.handleRegister(req, res, bcrypt, prisma) })
