@@ -12,20 +12,9 @@ const handleRegister = async (req, res, bcrypt, prisma) => {
         const hash = bcrypt.hashSync(password);
         console.log('Password hashed successfully');
         
-        // Use Prisma transaction
+        // Create user first, then login to satisfy FK constraint
         const result = await prisma.$transaction(async (tx) => {
-            console.log('Creating login record...');
-            // Create login record
-            const login = await tx.login.create({
-                data: {
-                    hash: hash,
-                    email: email
-                }
-            });
-            console.log('Login record created:', login.id);
-
             console.log('Creating user record...');
-            // Create user record
             const user = await tx.user.create({
                 data: {
                     email: email,
@@ -34,6 +23,15 @@ const handleRegister = async (req, res, bcrypt, prisma) => {
                 }
             });
             console.log('User record created:', user.id);
+
+            console.log('Creating login record...');
+            const login = await tx.login.create({
+                data: {
+                    hash: hash,
+                    email: email
+                }
+            });
+            console.log('Login record created:', login.id);
 
             return user;
         });
